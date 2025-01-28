@@ -7,7 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
 
-class AddManager extends Component
+class Managers extends Component
 {
     use WithPagination;
 
@@ -73,8 +73,10 @@ class AddManager extends Component
 
     public function addNewManager()
     {
+       
         $validatedData = $this->validate();
         
+       
         if ($this->editMode) {
             $manager = User::find($this->managerId);
             $manager->name = $validatedData['username'];
@@ -98,7 +100,7 @@ class AddManager extends Component
 
     public function render()
     {
-        return view('livewire.manager.add-manager', [
+        return view('livewire.manager.managers', [
             'managers' => User::paginate(10)
         ])->layout('layouts.app');
     }
