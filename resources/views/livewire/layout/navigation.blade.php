@@ -33,10 +33,17 @@ new class extends Component
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('managers')" :active="request()->routeIs('managers')" wire:navigate>
+                        {{ __('Managers') }}
+                    </x-nav-link>
                   
                 </div>
             </div>
 
+            <!-- Theme Switcher -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <livewire:theme-switcher />
+            </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -90,6 +97,9 @@ new class extends Component
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+            <div class="px-4 py-2">
+                <livewire:theme-switcher />
+            </div>
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800 dark:text-gray-200" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
                 <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
