@@ -19,6 +19,12 @@ class Employees extends Component
     public $showDeleteModal = false;
     public $employeeToDelete = null;
 
+    public $searchTerm = '';
+
+    public function updatingSearchTerm()
+    {
+        $this->resetPage(); // Reset to the first page when searching
+    }
 
 
 
@@ -43,22 +49,23 @@ class Employees extends Component
     /**
      * Summary of rules
      * @return array{category: string, company_contractor: string, date_of_joining: string, department: string, emp_id: string, full_name: string, plant_location: string}
-     */protected function rules()
-{
-    return [
-        'full_name' => 'required|string|min:3',
-        'emp_id' => [
-            'required',
-            'string',
-            Rule::unique('employees', 'emp_id')->ignore($this->emp_id, 'emp_id') // Replace 'id' with the column name used to identify the record
-        ],
-        'department' => 'required|string',
-        'company_contractor' => 'required|string',
-        'category' => 'required|string',
-        'date_of_joining' => 'required|date',
-        'plant_location' => 'required|string',
-    ];
-}
+     */
+    protected function rules()
+    {
+        return [
+            'full_name' => 'required|string|min:3',
+            'emp_id' => [
+                'required',
+                'string',
+                Rule::unique('employees', 'emp_id')->ignore($this->emp_id, 'emp_id') // Replace 'id' with the column name used to identify the record
+            ],
+            'department' => 'required|string',
+            'company_contractor' => 'required|string',
+            'category' => 'required|string',
+            'date_of_joining' => 'required|date',
+            'plant_location' => 'required|string',
+        ];
+    }
 
 
     /**
@@ -173,8 +180,16 @@ class Employees extends Component
      */
     public function render()
     {
+        $employees = Employee::query()
+            ->where('full_name', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('emp_id', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('department', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('plant_location', 'like', '%' . $this->searchTerm . '%')
+            ->latest()
+            ->paginate(10);
+
         return view('livewire.employees.employees', [
-            'employees' => Employee::paginate(10)
+            'employees' => $employees
         ])->layout('layouts.app');
     }
 }

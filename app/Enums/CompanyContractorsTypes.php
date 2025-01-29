@@ -15,4 +15,23 @@ enum CompanyContractorsTypes: string
     case PVNA_E_DRIVE = 'pvna e-drive';
     case QUADSUN = 'quadsun';
     case ASTER = 'aster';
+
+
+
+    public static function random(): string
+    {
+        return array_rand(array_flip([
+            self::PADMINI_VNA->value,
+            self::GANPATI_ENTERPRISES->value,
+            self::EARMARK->value,
+            self::VARADA_ENTERPRISES->value,
+            self::GREEN_THUMB->value,
+            self::HINDUSTAN->value,
+            self::PVCMT_DHANKOT->value,
+            self::PVCMT_PUNE->value,
+            self::PVNA_E_DRIVE->value,
+            self::QUADSUN->value,
+            self::ASTER->value,
+        ]));
+    }
 }

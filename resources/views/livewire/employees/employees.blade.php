@@ -34,7 +34,7 @@
                                 <x-input-error :messages="$errors->get('emp_id')" class="mt-2" />
 
                                 @if ($editMode)
-                                    <p class='text-red-600'> In Edit mode EMP ID is disabled</p>
+                                    <p class='text-sm px-2 py-2 dark:text-indigo-300 text-indigo-700'> In Edit mode EMP ID is disabled</p>
                                 @endif
 
                             </div>
@@ -141,7 +141,14 @@
                 <!-- Table Section -->
                 <div class="w-full lg:w-2/3">
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Employees List</h2>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Employees List</h2>
+                            <x-text-input wire:model.live.debounce.300ms="searchTerm" id="searchTerm" type="text"
+                            class="px-4 py-2 mt-1 block  border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            autofocus  placeholder="Search employees..." />
+
+                        
+                        </div>
 
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -214,7 +221,7 @@
                         </div>
 
                         <div class="mt-4">
-                            {{ $employees->links() }}
+                            {{ $employees->onEachSide(1)->links() }}
                         </div>
                     </div>
                 </div>

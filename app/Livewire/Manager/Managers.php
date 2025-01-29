@@ -101,7 +101,7 @@ class Managers extends Component
     public function render()
     {
         return view('livewire.manager.managers', [
-            'managers' => User::paginate(10)
+            'managers' => User::query()->latest()->paginate(10)
         ])->layout('layouts.app');
     }
 }
