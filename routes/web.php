@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeImportController;
 use App\Livewire\Employees\EmployeeDetail;
 use App\Livewire\Employees\Employees;
 use App\Livewire\Manager\ManagerDetail;
@@ -37,6 +38,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/issue-merchandise', IssueMerchandises::class)->name('issue.merchandise');
     Route::get('/available-stocks', AvailableStocks::class)->name('available.stocks');
 
+
+    Route::get('/employees/import', [EmployeeImportController::class, 'showForm'])->name('employees.import.form');
+    Route::post('/employees/import', [EmployeeImportController::class, 'import'])->name('employees.import');
 
 });
 

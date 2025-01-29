@@ -20,8 +20,18 @@ class Merchandise extends Model
     ];
 
 
-    public function issueMerchandise(){
-        return $this->hasMany(IssueMerchandise::class,'merchandise_id');
+    public function issueMerchandise()
+    {
+        return $this->hasMany(IssueMerchandise::class, 'merchandise_id');
+    }
+
+    public static function getTotalItemCount($item)
+    {
+        return self::where('item_name', $item)->sum('qty');
+    }
+
+    public static function getTotalItemValue() {
+        return self::sum(\DB::raw('qty * cost_per_item'));
     }
 
 }

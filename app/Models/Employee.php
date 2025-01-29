@@ -24,5 +24,9 @@ class Employee extends Model
         return $this->hasMany(IssueMerchandise::class,'employee_id');
     }
 
+    public static function getTotalCount() {
+        return self::count();
+    }
+
 }
 

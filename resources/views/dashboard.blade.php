@@ -1,3 +1,11 @@
+<?php
+
+$totalEmployees = \App\Models\Employee::getTotalCount();
+$totalJoiningKit = \App\Models\Merchandise::getTotalItemCount('Joining Kit');
+$totalItemValue = \App\Models\Merchandise::getTotalItemValue();
+
+?>
+
 <x-app-layout>
 
 
@@ -17,7 +25,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Active Total Employees</p>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">1225</p>
+                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{ $totalEmployees }}</p>
                         </div>
                     </div>
                 </div>
@@ -33,8 +41,9 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Total Stores</p>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">850</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Total Joining Kit</p>
+                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{ $totalJoiningKit }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -51,13 +60,13 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Total Value of Merchandise</p>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">1500000</p>
+                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{$totalItemValue}}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-       
+
 
             <!-- Action Buttons Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -77,7 +86,8 @@
                 </a>
 
                 <!-- Available Stock -->
-                <a href="{{route('available.stocks')}}" wire:navigate class="transform transition-all hover:scale-105">
+                <a href="{{ route('available.stocks') }}" wire:navigate
+                    class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none" stroke="currentColor"
@@ -105,7 +115,7 @@
                 </a>
 
                 <!-- Upload Employee Data -->
-                <a href="#" class="transform transition-all hover:scale-105">
+                <a href="{{route('employees.import.form')}}" wire:navigate class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none" stroke="currentColor"
@@ -122,8 +132,8 @@
                 <a href="{{ route('merchandise') }}" wire:navigate class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
-                            <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
