@@ -82,7 +82,8 @@
             <!-- Action Buttons Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Issue Merchandising -->
-                <a href="#" class="transform transition-all hover:scale-105">
+                <a href="{{ route('issue.merchandise') }}" wire:navigate
+                    class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none" stroke="currentColor"
@@ -180,7 +181,7 @@
                 </a>
 
                 <!-- Update Employee Details -->
-                <a href="#" class="transform transition-all hover:scale-105">
+                <a href="{{ route('employees') }}" wire:navigate class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none"

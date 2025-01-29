@@ -20,5 +20,9 @@ class Employee extends Model
         'plant_location',
     ];
 
+    public function issueMerchandise(){
+        return $this->hasMany(IssueMerchandise::class,'employee_id');
+    }
+
 }
 

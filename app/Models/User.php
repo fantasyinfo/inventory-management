@@ -48,8 +48,8 @@ class User extends Authenticatable
     }
 
 
-    public function tasks(): HasMany
+    public function issueMerchandise()
     {
-        return $this->hasMany(Task::class, 'user_id');
+        return $this->hasMany(IssueMerchandise::class, 'issued_by');
     }
 }

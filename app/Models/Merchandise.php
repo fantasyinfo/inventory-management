@@ -20,4 +20,8 @@ class Merchandise extends Model
     ];
 
 
+    public function issueMerchandise(){
+        return $this->hasMany(IssueMerchandise::class,'merchandise_id');
+    }
+
 }
