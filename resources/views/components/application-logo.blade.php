@@ -2,4 +2,4 @@
     'height' => '50px',
     'width' => '200px',
 ])
-<img src="./img/logo.png" height={{ $height }} width={{ $width }}>
+<img src="{{url('/img/logo.png')}}" height={{ $height }} width={{ $width }}>
