@@ -10,7 +10,7 @@ class EmployeeDetail extends Component
 
     public $employee;
     public function mount($id){
-        $this->employee = Employee::find($id);
+        $this->employee = Employee::with('issueMerchandise')->find($id);
     }
     public function render()
     {

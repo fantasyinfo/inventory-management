@@ -59,41 +59,53 @@
                                 <x-input-error :messages="$errors->get('employee_id')" class="mt-2" />
 
                                 <!-- Hidden Input to Bind Value -->
-                                <input type="hidden" name="employee_id" x-model="selectedEmployee.id" />
+
+                                <input type="hidden" wire:model.live="employee_id"
+                                    x-bind:value="selectedEmployee?.id" />
+
                             </div>
 
 
 
                             <div x-data="itemsDropdown()" class="relative">
-                                <x-input-label for="merchandise_id" :value="__('Select Item (Merchandise)')" />
-
-                                <!-- Input for Searching -->
+                                <x-input-label for="merchandise_id" :value="__('Select Item')" />
+                            
+                                <!-- Search Input -->
                                 <div class="relative">
-                                    <input id="merchandise_id" x-model="search" @focus="open = true"
-                                        @click.away="open = false" @keydown.escape="open = false"
+                                    <input 
+                                        id="merchandise_id" 
+                                        x-model="search"
+                                        @focus="open = true"
+                                        @click.away="open = false" 
+                                        @keydown.escape="open = false"
                                         placeholder="Search Item..."
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                    />
                                 </div>
-
+                            
                                 <!-- Dropdown Options -->
-                                <div x-show="open" x-cloak
-                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-[300px] overflow-y-scroll">
-                                    <ul class="max-h-[300px] overflow-y-scroll"
-                                        style="height: 300px;overflow-y:scroll;border:1px solid">
+                                <div 
+                                    x-show="open" 
+                                    x-cloak
+                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg"
+                                >
+                                    <ul class="max-h-[300px] overflow-y-auto">
                                         <template x-for="merchandise in filteredMerchandises" :key="merchandise.id">
-                                            <li @click="selectMerchandise(merchandise)"
-                                                class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white">
-                                                <span x-text="merchandise.item_name"></span>
+                                            <li 
+                                                @click="selectMerchandise(merchandise)"
+                                                class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white"
+                                            >
+                                  
+                                                <span x-text="merchandise.item_name + ' => QTY: ' + merchandise.qty"></span>
                                             </li>
                                         </template>
                                     </ul>
                                 </div>
-
-
+                            
                                 <x-input-error :messages="$errors->get('merchandise_id')" class="mt-2" />
-
-                                <!-- Hidden Input to Bind Value -->
-                                <input type="hidden" name="merchandise_id" x-model="selectedMerchandise.id" />
+                            
+                                <!-- Hidden Input -->
+                                <input type="hidden" wire:model.live="merchandise_id" x-bind:value="selectedMerchandise?.id" />
                             </div>
 
 
@@ -106,7 +118,7 @@
                             </div>
                             <div>
                                 <x-input-label for="issue_date" :value="__('Issue Date')" />
-                                <x-text-input wire:model="issue_date" id="issue_date" type="date"
+                                <x-text-input wire:model="issue_date" id="issue_date" type="text"
                                     class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                     autofocus />
                                 <x-input-error :messages="$errors->get('issue_date')" class="mt-2" />
@@ -164,7 +176,7 @@
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Brand / Make
+                                            Issued Date
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -172,12 +184,12 @@
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Cost per item
+                                            Issued Employee
                                         </th>
 
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Plant Location (Store)
+                                            Issued By (Manager)
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -186,41 +198,34 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                                  
                                     @foreach ($issuedMerchandises as $issuedMerchandise)
                                         <tr>
 
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ $issuedMerchandise->item_name }}
+                                                {{ $issuedMerchandise?->merchandise?->item_name }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ ucwords($issuedMerchandise->brand_make) }}
+                                                {{ date('F j, Y', strtotime($issuedMerchandise?->issue_date)) }} 
                                             </td>
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ ucwords($issuedMerchandise->qty) }}
-                                            </td>
+                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                                            {{ ucwords($issuedMerchandise->qty) }}
+                                        </td>
+                                        <td
+                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                                          ({{$issuedMerchandise?->employee?->emp_id}})  {{ ucwords($issuedMerchandise?->employee?->full_name) }}
+                                        </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ number_format($issuedMerchandise->cost_per_item) }}
+                                                {{ ucwords($issuedMerchandise?->issuedBy?->name) }}
                                             </td>
 
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ ucwords($issuedMerchandise->plant_location) }} (
-                                                {{ ucwords($issuedMerchandise->store_number) }})
-                                            </td>
+                                         
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <button wire:navigate
-                                                    href="{{ route('merchandise.details', ['id' => $issuedMerchandise->id]) }}"
-                                                    class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
-                                                    View
-                                                </button>
-                                                <button wire:click="startEdit({{ $issuedMerchandise->id }})"
-                                                    class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
-                                                    Edit
-                                                </button>
+                                
                                                 <button wire:click="confirmDelete({{ $issuedMerchandise->id }})"
                                                     class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
                                                     Delete
@@ -301,8 +306,9 @@
             Alpine.data('employeeDropdown', () => ({
                 search: '',
                 open: false,
-                selectedEmployee: {},
-                employees: @json($employees), // Pass employees as JSON to Alpine.js
+                selectedEmployee: null,
+                employees: @json($employees),
+
                 get filteredEmployees() {
                     if (!this.search) return this.employees;
                     return this.employees.filter(employee =>
@@ -311,29 +317,60 @@
                         .includes(this.search.toLowerCase())
                     );
                 },
+
                 selectEmployee(employee) {
                     this.selectedEmployee = employee;
                     this.search = employee.emp_id + ' ' + employee.full_name;
+                    // Emit a Livewire event when an employee is selected
+                    this.$wire.set('employee_id', employee.id);
                     this.open = false;
+                },
+
+                init() {
+                    this.selectedEmployee = null;
+                    // If there's an initial value from Livewire, set it
+                    if (this.$wire.get('employee_id')) {
+                        const initialEmployee = this.employees.find(e => e.id === this.$wire.get(
+                            'employee_id'));
+                        if (initialEmployee) {
+                            this.selectEmployee(initialEmployee);
+                        }
+                    }
                 }
             }));
             Alpine.data('itemsDropdown', () => ({
                 search: '',
                 open: false,
-                selectedMerchandise: {},
-                merchandises: @json($merchandises), // Pass merchandises as JSON to Alpine.js
+                selectedMerchandise: null,
+                merchandises: @json($merchandises),
+
                 get filteredMerchandises() {
                     if (!this.search) return this.merchandises;
                     return this.merchandises.filter(merchandise =>
-                        (merchandise.item_name)
+                        merchandise.item_name
                         .toLowerCase()
                         .includes(this.search.toLowerCase())
                     );
                 },
+
                 selectMerchandise(merchandise) {
                     this.selectedMerchandise = merchandise;
                     this.search = merchandise.item_name;
+                    // Emit to Livewire
+                    this.$wire.set('merchandise_id', merchandise.id);
                     this.open = false;
+                },
+
+                init() {
+                    this.selectedMerchandise = null;
+                    // Handle initial value if exists
+                    if (this.$wire.get('merchandise_id')) {
+                        const initialMerchandise = this.merchandises.find(m => m.id === this.$wire.get(
+                            'merchandise_id'));
+                        if (initialMerchandise) {
+                            this.selectMerchandise(initialMerchandise);
+                        }
+                    }
                 }
             }));
         });
