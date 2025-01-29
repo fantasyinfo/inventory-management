@@ -25,7 +25,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Active Total Employees</p>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{ $totalEmployees }}</p>
+                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{ number_format($totalEmployees) }}</p>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Total Joining Kit</p>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{ $totalJoiningKit }}
+                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{ number_format($totalJoiningKit) }}
                             </p>
                         </div>
                     </div>
@@ -60,7 +60,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Total Value of Merchandise</p>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{$totalItemValue}}</p>
+                            <p class="text-2xl font-semibold text-gray-800 dark:text-gray-200">{{number_format($totalItemValue)}}</p>
                         </div>
                     </div>
                 </div>
@@ -157,7 +157,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                 </a>
 
                 <!-- Download Report -->
-                <a href="#" class="transform transition-all hover:scale-105">
+                <a href="{{route('employees.export.form')}}" wire:navigate class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none"

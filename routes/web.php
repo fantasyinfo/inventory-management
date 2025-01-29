@@ -39,8 +39,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/available-stocks', AvailableStocks::class)->name('available.stocks');
 
 
+    // import & export 
     Route::get('/employees/import', [EmployeeImportController::class, 'showForm'])->name('employees.import.form');
     Route::post('/employees/import', [EmployeeImportController::class, 'import'])->name('employees.import');
+
+    Route::get('/employees/export', [EmployeeImportController::class, 'showExportForm'])->name('employees.export.form');
+    Route::post('/employees/export', [EmployeeImportController::class, 'export'])->name('employees.export');
 
 });
 
