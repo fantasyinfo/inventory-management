@@ -1,0 +1,4 @@
+emp_id,department,full_name,company_contractor,category,date_of_joining,plant_location
+10011,HR,John Doe Sachine,Company A,Permanent,2022-01-15,New York
+80012,IT,Jane Smith Sachine,Company B,Contract,2021-06-10,Los Angeles
+10013,Finance,Mike Johnson,Company C,Permanent,2023-02-25,Chicago

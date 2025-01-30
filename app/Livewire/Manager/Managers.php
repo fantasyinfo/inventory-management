@@ -6,6 +6,8 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class Managers extends Component
 {
@@ -17,17 +19,22 @@ class Managers extends Component
     public $showDeleteModal = false;
     public $managerToDelete = null;
 
+    public $permissions = [], $selectedPermissions = [];
+
     protected function rules()
     {
-        $passwordRules = $this->editMode 
+        $passwordRules = $this->editMode
             ? ['nullable', 'string', 'min:3']
             : ['required', 'string', 'min:3'];
+
+        $permissionsRules = $this->editMode ? ['array'] : ['nullable'];
 
         return [
             'username' => 'required|string|min:3',
             'email' => 'required|email|unique:users,email,' . $this->managerId,
             'password' => $passwordRules,
-            'password_confirmation' => $this->editMode 
+            'selectedPermissions' => $permissionsRules,
+            'password_confirmation' => $this->editMode
                 ? 'nullable|same:password'
                 : 'required_with:password|same:password|string|min:3',
         ];
@@ -42,6 +49,11 @@ class Managers extends Component
         $this->email = $manager->email;
         $this->password = '';
         $this->password_confirmation = '';
+
+        $this->permissions = Permission::orderBy('id')->get(['id', 'name']);
+
+        // Fetch user’s assigned permissions and auto-check them
+        $this->selectedPermissions = $manager->permissions->pluck('name')->toArray();
     }
 
     public function cancelEdit()
@@ -73,10 +85,10 @@ class Managers extends Component
 
     public function addNewManager()
     {
-       
+
         $validatedData = $this->validate();
-        
-       
+
+
         if ($this->editMode) {
             $manager = User::find($this->managerId);
             $manager->name = $validatedData['username'];
@@ -85,13 +97,26 @@ class Managers extends Component
                 $manager->password = Hash::make($validatedData['password']);
             }
             $manager->save();
+
+            $manager->syncPermissions($validatedData['selectedPermissions']);
+
             session()->flash('message', 'Manager updated successfully!');
         } else {
-            User::create([
+            $manager = User::create([
                 'name' => $validatedData['username'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
             ]);
+
+            $manager->assignRole('Store Manager');
+
+            // Ensure permissions from role are applied to the user
+            $role = Role::where('name', 'Store Manager')->first();
+            if ($role) {
+                $manager->syncPermissions($role->permissions->pluck('name')->toArray());
+            }
+
+
             session()->flash('message', 'Manager created successfully!');
         }
 

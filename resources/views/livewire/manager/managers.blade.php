@@ -12,71 +12,102 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row gap-6">
                 <!-- Form Section -->
-                <div class="w-full lg:w-1/3">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                            {{ $editMode ? 'Edit Manager' : 'Add New Manager' }}
-                        </h2>
+                @canany(['create store manager', 'edit store manager'])
+                    <div class="w-full lg:w-1/3">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                                {{ $editMode ? 'Edit Manager' : 'Add New Manager' }}
+                            </h2>
 
-                        @if (session()->has('message'))
-                            <div
-                                class="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 p-4 rounded-lg mb-6">
-                                {{ session('message') }}
-                            </div>
-                        @endif
+                            @if (session()->has('message'))
+                                <div
+                                    class="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 p-4 rounded-lg mb-6">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
 
-                        <form wire:submit.prevent="addNewManager" class="space-y-6">
-                            <div>
-                                <x-input-label for="username" :value="__('User Name')" />
-                                <x-text-input wire:model="username" id="username" type="text"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('username')" class="mt-2" />
-                            </div>
+                            <form wire:submit.prevent="addNewManager" class="space-y-6">
+                                <div>
+                                    <x-input-label for="username" :value="__('User Name')" />
+                                    <x-text-input wire:model="username" id="username" type="text"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('username')" class="mt-2" />
+                                </div>
 
-                            <div>
-                                <x-input-label for="email" :value="__('Email')" />
-                                <x-text-input wire:model="email" id="email" type="email"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
-                                <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                            </div>
+                                <div>
+                                    <x-input-label for="email" :value="__('Email')" />
+                                    <x-text-input wire:model="email" id="email" type="email"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
+                                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                                </div>
 
-                            <div>
-                                <x-input-label for="password" :value="__('Password')" />
-                                <x-text-input wire:model="password" id="password" type="password"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
-                                @if ($editMode)
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Leave blank to keep current
-                                        password</p>
-                                @endif
-                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                            </div>
+                                <div>
+                                    <x-input-label for="password" :value="__('Password')" />
+                                    <x-text-input wire:model="password" id="password" type="password"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
+                                    @if ($editMode)
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Leave blank to keep current
+                                            password</p>
+                                    @endif
+                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                </div>
 
-                            <div>
-                                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                                <x-text-input wire:model="password_confirmation" id="password_confirmation"
-                                    type="password"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
-                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                            </div>
-
-                            <div class="flex items-center gap-4">
-                                <x-primary-button>
-                                    {{ $editMode ? 'Update Manager' : 'Create New Manager' }}
-                                </x-primary-button>
+                                <div>
+                                    <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                                    <x-text-input wire:model="password_confirmation" id="password_confirmation"
+                                        type="password"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" />
+                                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                </div>
 
                                 @if ($editMode)
-                                    <x-secondary-button wire:click="cancelEdit" type="button">
-                                        Cancel
-                                    </x-secondary-button>
+                                    <!-- PERMISSIONS CHECKBOX LIST -->
+                                    <div>
+                                        <x-input-label :value="__('Change Permissions')" />
+                                        <div class="grid grid-cols-2 gap-2 mt-2">
+                                            @foreach ($permissions as $permission)
+                                                <label class="flex items-center">
+                                                    <input type="checkbox" wire:model="selectedPermissions"
+                                                        value="{{ $permission->name }}"
+                                                        class="text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                                                        {{ in_array($permission->name, $selectedPermissions) ? 'checked' : '' }}>
+                                                    <span
+                                                        class="ml-2 text-gray-900 dark:text-gray-300">{{ ucwords($permission->name) }}</span>
+                                                </label>
+                                            @endforeach
+
+                                        </div>
+                                        <x-input-error :messages="$errors->get('selectedPermissions')" class="mt-2" />
+                                    </div>
                                 @endif
-                            </div>
-                        </form>
+
+                                <div class="flex items-center gap-4">
+                                    @can('create store manager')
+                                        @if (!$editMode)
+                                            <x-primary-button>{{ 'Create New Manager' }}</x-primary-button>
+                                        @endif
+                                    @endcan
+                                    @can('edit store manager')
+                                        @if ($editMode)
+                                            <x-primary-button>{{ 'Update Manager' }}</x-primary-button>
+                                        @endif
+                                    @endcan
+
+                                    @if ($editMode)
+                                        <x-secondary-button wire:click="cancelEdit" type="button">
+                                            Cancel
+                                        </x-secondary-button>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endcanany
+
 
                 <!-- Table Section -->
-                <div class="w-full lg:w-2/3">
+                <div class="w-full @canany(['create store manager', 'edit store manager']) lg:w-2/3 @endcanany ">
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Managers List</h2>
 
@@ -112,20 +143,25 @@
                                                 {{ $manager->email }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <button wire:navigate
-                                                    href="{{ route('managers.details', ['id' => $manager->id]) }}"
-                                                    class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
-                                                    View
-                                                </button>
-
-                                                <button wire:click="startEdit({{ $manager->id }})"
-                                                    class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
-                                                    Edit
-                                                </button>
-                                                <button wire:click="confirmDelete({{ $manager->id }})"
-                                                    class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                    Delete
-                                                </button>
+                                                @can('view store manager')
+                                                    <button wire:navigate
+                                                        href="{{ route('managers.details', ['id' => $manager->id]) }}"
+                                                        class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
+                                                        View
+                                                    </button>
+                                                @endcan
+                                                @can('edit store manager')
+                                                    <button wire:click="startEdit({{ $manager->id }})"
+                                                        class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
+                                                        Edit
+                                                    </button>
+                                                @endcan
+                                                @can('delete store manager')
+                                                    <button wire:click="confirmDelete({{ $manager->id }})"
+                                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
+                                                        Delete
+                                                    </button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

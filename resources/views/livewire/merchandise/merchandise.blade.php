@@ -11,112 +11,126 @@
     <div class="py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row gap-6">
-                <!-- Form Section -->
-                <div class="w-full lg:w-1/3">
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                            {{ $editMode ? 'Edit Merchandise' : 'Add New Merchandise' }}
-                        </h2>
+                @canany(['create merchandise', 'update merchandise'])
+                    <!-- Form Section -->
+                    <div class="w-full lg:w-1/3">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                                {{ $editMode ? 'Edit Merchandise' : 'Add New Merchandise' }}
+                            </h2>
 
-                        @if (session()->has('message'))
-                            <div
-                                class="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 p-4 rounded-lg mb-6">
-                                {{ session('message') }}
-                            </div>
-                        @endif
+                            @if (session()->has('message'))
+                                <div
+                                    class="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 p-4 rounded-lg mb-6">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
 
-                        <form wire:submit.prevent="addNewMerchandise" class="space-y-6">
-                        
-                            <div>
-                                <x-input-label for="item_name" :value="__('Item Name')" />
-                                <x-text-input wire:model="item_name" id="item_name" type="text"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('item_name')" class="mt-2" />
-                            </div>
-                    
-                            <div>
-                                <x-input-label for="date_of_purchase" :value="__('Date of Purchase')" />
-                                <x-text-input wire:model="date_of_purchase" id="date_of_purchase" type="text"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus placeholder="01-01-2025" />
-                                <x-input-error :messages="$errors->get('date_of_purchase')" class="mt-2" />
-                            </div>
+                            <form wire:submit.prevent="addNewMerchandise" class="space-y-6">
 
-                            <div>
-                                <x-input-label for="supplier_name" :value="__('Supplier Name')" />
-                                <x-text-input wire:model="supplier_name" id="supplier_name" type="text"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('supplier_name')" class="mt-2" />
-                            </div>
-                            <div>
-                                <x-input-label for="brand_make" :value="__('Brand/Make')" />
-                                <x-text-input wire:model="brand_make" id="brand_make" type="text"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('brand_make')" class="mt-2" />
-                            </div>
-                            <div>
-                                <x-input-label for="qty" :value="__('Purchase Quantity')" />
-                                <x-text-input wire:model="qty" id="qty" type="number"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('qty')" class="mt-2" />
-                            </div>
-                            <div>
-                                <x-input-label for="cost_per_item" :value="__('Cost Per Item')" />
-                                <x-text-input wire:model="cost_per_item" id="cost_per_item" type="number"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('cost_per_item')" class="mt-2" />
-                            </div>
+                                <div>
+                                    <x-input-label for="item_name" :value="__('Item Name')" />
+                                    <x-text-input wire:model="item_name" id="item_name" type="text"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('item_name')" class="mt-2" />
+                                </div>
 
-                            <div>
-                                <x-input-label for="plant_location" :value="__('Plant Location')" />
-                                <select id="plant_location" wire:model="plant_location" name="plant_location"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" selected>Choose a Plant Location</option>
-                                    @foreach (\App\Enums\PlantsLocations::cases() as $plant_locations)
-                                        <option value="{{ $plant_locations->value }}"
-                                            {{ $plant_location === $plant_locations->value ? 'selected' : '' }}>
-                                            {{ $plant_locations->name }}</option>
-                                    @endforeach
-                                </select>
-                                <x-input-error :messages="$errors->get('plant_location')" class="mt-2" />
-                            </div>
+                                <div>
+                                    <x-input-label for="date_of_purchase" :value="__('Date of Purchase')" />
+                                    <x-text-input wire:model="date_of_purchase" id="date_of_purchase" type="text"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus placeholder="01-01-2025" />
+                                    <x-input-error :messages="$errors->get('date_of_purchase')" class="mt-2" />
+                                </div>
 
-                            <div>
-                                <x-input-label for="store_number" :value="__('Store Number')" />
-                                <select id="store_number" wire:model="store_number" name="store_number"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" selected>Choose a Store Number</option>
-                                    @foreach ([1, 2, 3, 4] as $store_numbers)
-                                        <option value="{{ $store_numbers }}"
-                                            {{ $store_number === $store_numbers ? 'selected' : '' }}>
-                                            {{ $store_numbers }}</option>
-                                    @endforeach
-                                </select>
-                                <x-input-error :messages="$errors->get('store_number')" class="mt-2" />
-                            </div>
+                                <div>
+                                    <x-input-label for="supplier_name" :value="__('Supplier Name')" />
+                                    <x-text-input wire:model="supplier_name" id="supplier_name" type="text"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('supplier_name')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="brand_make" :value="__('Brand/Make')" />
+                                    <x-text-input wire:model="brand_make" id="brand_make" type="text"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('brand_make')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="qty" :value="__('Purchase Quantity')" />
+                                    <x-text-input wire:model="qty" id="qty" type="number"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('qty')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="cost_per_item" :value="__('Cost Per Item')" />
+                                    <x-text-input wire:model="cost_per_item" id="cost_per_item" type="number"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('cost_per_item')" class="mt-2" />
+                                </div>
 
-                            <div class="flex items-center gap-4">
-                                <x-primary-button>
-                                    {{ $editMode ? 'Update Merchandise' : 'Create New Merchandise' }}
-                                </x-primary-button>
+                                <div>
+                                    <x-input-label for="plant_location" :value="__('Plant Location')" />
+                                    <select id="plant_location" wire:model="plant_location" name="plant_location"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="" selected>Choose a Plant Location</option>
+                                        @foreach (\App\Enums\PlantsLocations::cases() as $plant_locations)
+                                            <option value="{{ $plant_locations->value }}"
+                                                {{ $plant_location === $plant_locations->value ? 'selected' : '' }}>
+                                                {{ $plant_locations->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <x-input-error :messages="$errors->get('plant_location')" class="mt-2" />
+                                </div>
 
-                                @if ($editMode)
-                                    <x-secondary-button wire:click="cancelEdit" type="button">
-                                        Cancel
-                                    </x-secondary-button>
-                                @endif
-                            </div>
-                        </form>
+                                <div>
+                                    <x-input-label for="store_number" :value="__('Store Number')" />
+                                    <select id="store_number" wire:model="store_number" name="store_number"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="" selected>Choose a Store Number</option>
+                                        @foreach ([1, 2, 3, 4] as $store_numbers)
+                                            <option value="{{ $store_numbers }}"
+                                                {{ $store_number === $store_numbers ? 'selected' : '' }}>
+                                                {{ $store_numbers }}</option>
+                                        @endforeach
+                                    </select>
+                                    <x-input-error :messages="$errors->get('store_number')" class="mt-2" />
+                                </div>
+
+                                <div class="flex items-center gap-4">
+
+
+                                    @can('create merchandise')
+                                        @if (!$editMode)
+                                            <x-primary-button>{{ 'Create New Merchandise' }}</x-primary-button>
+                                        @endif
+                                    @endcan
+                                    @can('update merchandise')
+                                        @if ($editMode)
+                                            <x-primary-button>{{ 'Update Merchandise' }}</x-primary-button>
+                                        @endif
+                                    @endcan
+
+
+
+
+
+                                    @if ($editMode)
+                                        <x-secondary-button wire:click="cancelEdit" type="button">
+                                            Cancel
+                                        </x-secondary-button>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-
+                @endcanany
                 <!-- Table Section -->
-                <div class="w-full lg:w-2/3">
+                <div class="w-full @canany(['create merchandise', 'update merchandise']) lg:w-2/3 @endcanany">
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Merchandises List</h2>
@@ -185,19 +199,25 @@
                                                 {{ ucwords($merchanide->store_number) }})
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                @can('view merchandise')
                                                 <button wire:navigate
                                                     href="{{ route('merchandise.details', ['id' => $merchanide->id]) }}"
                                                     class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
                                                     View
                                                 </button>
+                                                @endcan
+                                                @can('update merchandise')
                                                 <button wire:click="startEdit({{ $merchanide->id }})"
                                                     class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
                                                     Edit
                                                 </button>
+                                                @endcan
+                                                @can('delete merchandise')
                                                 <button wire:click="confirmDelete({{ $merchanide->id }})"
                                                     class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
                                                     Delete
                                                 </button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

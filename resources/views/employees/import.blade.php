@@ -28,6 +28,7 @@
         </form>
 
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Sample CSV Format</h3>
+        <a target="_blank" class="bg-green-600 px-3 py-2" href="{{url('/csv/employee.csv')}}" download >Download Sample CSV File</a>
         <div class="container mx-auto px-4 py-8">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
                 <!-- Header Section -->
