@@ -8,6 +8,8 @@ use App\Models\Merchandise;
 use App\Models\User;
 use Livewire\Component;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 class IssueMerchandises extends Component
 {
 
@@ -60,7 +62,6 @@ class IssueMerchandises extends Component
         return [
             'employee_id' => 'required|exists:employees,id',
             'merchandise_id' => 'required|exists:merchandise,id',
-            'issued_by' => 'required|exists:users,id',
             'qty' => 'required|numeric',
             'issue_date' => 'required|date',
         ];
@@ -78,7 +79,7 @@ class IssueMerchandises extends Component
         IssueMerchandise::create([
             'employee_id' => $validatedData['employee_id'],
             'merchandise_id' => $validatedData['merchandise_id'],
-            'issued_by' => $validatedData['issued_by'],
+            'issued_by' => Auth::id(),
             'qty' => $validatedData['qty'],
             'issue_date' => Carbon::createFromFormat('d-m-Y', $validatedData['issue_date'])->format('Y-m-d H:i:s'),
         ]);

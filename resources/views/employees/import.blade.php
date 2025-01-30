@@ -12,6 +12,7 @@
             </div>
         @endif
 
+        @can('bulk upload employee')
         <form action="{{ route('employees.import') }}" method="POST" enctype="multipart/form-data"
             onsubmit="startUpload()">
             @csrf
@@ -26,6 +27,7 @@
                 Upload File
             </button>
         </form>
+        @endcan
 
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Sample CSV Format</h3>
         <a target="_blank" class="bg-green-600 px-3 py-2" href="{{url('/csv/employee.csv')}}" download >Download Sample CSV File</a>

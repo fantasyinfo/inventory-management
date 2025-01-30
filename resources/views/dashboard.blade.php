@@ -71,7 +71,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
             <!-- Action Buttons Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Issue Merchandising -->
-                <a href="{{ route('issue.merchandise') }}" wire:navigate
+                <a href="{{ route('issue.merchandise') }}" 
                     class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
@@ -86,7 +86,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                 </a>
 
                 <!-- Available Stock -->
-                <a href="{{ route('available.stocks') }}" wire:navigate
+                <a href="{{ route('available.stocks') }}" 
                     class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
@@ -101,7 +101,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                 </a>
 
                 <!-- Add Employee -->
-                <a href="{{ route('employees') }}" wire:navigate class="transform transition-all hover:scale-105">
+                <a href="{{ route('employees') }}"  class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none" stroke="currentColor"
@@ -114,8 +114,9 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                     </div>
                 </a>
 
+                @can('bulk upload employee')
                 <!-- Upload Employee Data -->
-                <a href="{{route('employees.import.form')}}" wire:navigate class="transform transition-all hover:scale-105">
+                <a href="{{route('employees.import.form')}}"  class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none" stroke="currentColor"
@@ -127,9 +128,10 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                         </div>
                     </div>
                 </a>
+                @endcan
 
                 <!-- Add New Merchandising -->
-                <a href="{{ route('merchandise') }}" wire:navigate class="transform transition-all hover:scale-105">
+                <a href="{{ route('merchandise') }}"  class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none" stroke="currentColor"
@@ -143,7 +145,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                 </a>
 
                 <!-- Add New Store Manager -->
-                <a wire:navigate href="{{ route('managers') }}" class="transform transition-all hover:scale-105">
+                <a  href="{{ route('managers') }}" class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none"
@@ -155,9 +157,9 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                         </div>
                     </div>
                 </a>
-
+            
                 <!-- Download Report -->
-                <a href="{{route('employees.export.form')}}" wire:navigate class="transform transition-all hover:scale-105">
+                <a href="{{route('employees.export.form')}}"  class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none"
@@ -170,8 +172,9 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                     </div>
                 </a>
 
+                @can('update employee')
                 <!-- Update Employee Details -->
-                <a href="{{ route('employees') }}" wire:navigate class="transform transition-all hover:scale-105">
+                <a href="{{ route('employees') }}"  class="transform transition-all hover:scale-105">
                     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-gray-900 dark:text-white">
                         <div class="flex flex-col items-center">
                             <svg class="h-8 w-8 mb-2 text-gray-700 dark:text-white" fill="none"
@@ -183,6 +186,7 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
                         </div>
                     </div>
                 </a>
+                @endcan
             </div>
 
 

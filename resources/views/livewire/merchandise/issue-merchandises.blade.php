@@ -28,120 +28,112 @@
                             </div>
                         @endif
 
-                        <form wire:submit.prevent="addNewMerchandise" class="space-y-6">
+                        @can('issue merchandise')
+                            <form wire:submit.prevent="addNewMerchandise" class="space-y-6">
 
-                            <div x-data="employeeDropdown()" class="relative">
-                                <x-input-label for="employee_id" :value="__('Select Employee')" />
+                                <div x-data="employeeDropdown()" class="relative">
+                                    <x-input-label for="employee_id" :value="__('Select Employee')" />
 
-                                <!-- Input for Searching -->
-                                <div class="relative">
-                                    <input id="employee_id" x-model="search" @focus="open = true"
-                                        @click.away="open = false" @keydown.escape="open = false"
-                                        placeholder="Search Employee..."
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                    <!-- Input for Searching -->
+                                    <div class="relative">
+                                        <input id="employee_id" x-model="search" @focus="open = true"
+                                            @click.away="open = false" @keydown.escape="open = false"
+                                            placeholder="Search Employee..."
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                    </div>
+
+                                    <!-- Dropdown Options -->
+                                    <div x-show="open" x-cloak
+                                        class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-[300px] overflow-y-scroll"
+                                        style="display: none;">
+                                        <ul class="max-h-[300px] overflow-y-scroll"
+                                            style="height: 300px;overflow-y:scroll;border:1px solid">
+                                            <template x-for="employee in filteredEmployees" :key="employee.id">
+                                                <li @click="selectEmployee(employee)"
+                                                    class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white">
+                                                    <span x-text="employee.emp_id + ' ' + employee.full_name"></span>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+
+
+                                    <x-input-error :messages="$errors->get('employee_id')" class="mt-2" />
+
+                                    <!-- Hidden Input to Bind Value -->
+
+                                    <input type="hidden" wire:model.live="employee_id"
+                                        x-bind:value="selectedEmployee?.id" />
+
                                 </div>
 
-                                <!-- Dropdown Options -->
-                                <div x-show="open" x-cloak
-                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-[300px] overflow-y-scroll" style="display: none;">
-                                    <ul class="max-h-[300px] overflow-y-scroll"
-                                        style="height: 300px;overflow-y:scroll;border:1px solid">
-                                        <template x-for="employee in filteredEmployees" :key="employee.id">
-                                            <li @click="selectEmployee(employee)"
-                                                class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white">
-                                                <span x-text="employee.emp_id + ' ' + employee.full_name"></span>
-                                            </li>
-                                        </template>
-                                    </ul>
+
+
+                                <div x-data="itemsDropdown()" class="relative">
+                                    <x-input-label for="merchandise_id" :value="__('Select Item')" />
+
+                                    <!-- Search Input -->
+                                    <div class="relative">
+                                        <input id="merchandise_id" x-model="search" @focus="open = true"
+                                            @click.away="open = false" @keydown.escape="open = false"
+                                            placeholder="Search Item..."
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                    </div>
+
+                                    <!-- Dropdown Options -->
+                                    <div x-show="open" x-cloak
+                                        class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg"
+                                        style="display: none;">
+                                        <ul class="max-h-[300px] overflow-y-auto">
+                                            <template x-for="merchandise in filteredMerchandises" :key="merchandise.id">
+                                                <li @click="selectMerchandise(merchandise)"
+                                                    class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white">
+
+                                                    <span
+                                                        x-text="merchandise.item_name + ' => QTY: ' + merchandise.qty"></span>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+
+                                    <x-input-error :messages="$errors->get('merchandise_id')" class="mt-2" />
+
+                                    <!-- Hidden Input -->
+                                    <input type="hidden" wire:model.live="merchandise_id"
+                                        x-bind:value="selectedMerchandise?.id" />
                                 </div>
 
 
-                                <x-input-error :messages="$errors->get('employee_id')" class="mt-2" />
-
-                                <!-- Hidden Input to Bind Value -->
-
-                                <input type="hidden" wire:model.live="employee_id"
-                                    x-bind:value="selectedEmployee?.id" />
-
-                            </div>
-
-
-
-                            <div x-data="itemsDropdown()" class="relative">
-                                <x-input-label for="merchandise_id" :value="__('Select Item')" />
-
-                                <!-- Search Input -->
-                                <div class="relative">
-                                    <input id="merchandise_id" x-model="search" @focus="open = true"
-                                        @click.away="open = false" @keydown.escape="open = false"
-                                        placeholder="Search Item..."
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <div>
+                                    <x-input-label for="qty" :value="__('Qty')" />
+                                    <x-text-input wire:model="qty" id="qty" type="number"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('qty')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="issue_date" :value="__('Issue Date')" />
+                                    <x-text-input wire:model="issue_date"  id="issue_date" type="text"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('issue_date')" class="mt-2" />
                                 </div>
 
-                                <!-- Dropdown Options -->
-                                <div x-show="open" x-cloak
-                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg" style="display: none;">
-                                    <ul class="max-h-[300px] overflow-y-auto">
-                                        <template x-for="merchandise in filteredMerchandises" :key="merchandise.id">
-                                            <li @click="selectMerchandise(merchandise)"
-                                                class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white">
 
-                                                <span
-                                                    x-text="merchandise.item_name + ' => QTY: ' + merchandise.qty"></span>
-                                            </li>
-                                        </template>
-                                    </ul>
+                                <div class="flex items-center gap-4">
+                                    <x-primary-button>
+                                        {{ $editMode ? 'Update Issued Merchandise' : 'Issue New Merchandise' }}
+                                    </x-primary-button>
+
+                                    @if ($editMode)
+                                        <x-secondary-button wire:click="cancelEdit" type="button">
+                                            Cancel
+                                        </x-secondary-button>
+                                    @endif
                                 </div>
+                            </form>
+                        @endcan
 
-                                <x-input-error :messages="$errors->get('merchandise_id')" class="mt-2" />
-
-                                <!-- Hidden Input -->
-                                <input type="hidden" wire:model.live="merchandise_id"
-                                    x-bind:value="selectedMerchandise?.id" />
-                            </div>
-
-
-                            <div>
-                                <x-input-label for="qty" :value="__('Qty')" />
-                                <x-text-input wire:model="qty" id="qty" type="number"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('qty')" class="mt-2" />
-                            </div>
-                            <div>
-                                <x-input-label for="issue_date" :value="__('Issue Date')" />
-                                <x-text-input wire:model="issue_date" id="issue_date" type="text"
-                                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                    autofocus />
-                                <x-input-error :messages="$errors->get('issue_date')" class="mt-2" />
-                            </div>
-
-                            <div>
-                                <x-input-label for="issued_by" :value="__('Issued By')" />
-                                <select id="issued_by" wire:model="issued_by" name="issued_by"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" selected>Select Issued By</option>
-                                    @foreach ($managers as $manager)
-                                        <option value="{{ $manager->id }}"
-                                            {{ $issued_by === $manager->id ? 'selected' : '' }}>
-                                            {{ $manager->name }}</option>
-                                    @endforeach
-                                </select>
-                                <x-input-error :messages="$errors->get('issued_by')" class="mt-2" />
-                            </div>
-
-                            <div class="flex items-center gap-4">
-                                <x-primary-button>
-                                    {{ $editMode ? 'Update Issued Merchandise' : 'Issue New Merchandise' }}
-                                </x-primary-button>
-
-                                @if ($editMode)
-                                    <x-secondary-button wire:click="cancelEdit" type="button">
-                                        Cancel
-                                    </x-secondary-button>
-                                @endif
-                            </div>
-                        </form>
                     </div>
                 </div>
 
@@ -218,11 +210,12 @@
 
 
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-
-                                                <button wire:click="confirmDelete({{ $issuedMerchandise->id }})"
-                                                    class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                    Delete
-                                                </button>
+                                                @can('delete issue merchandise')
+                                                    <button wire:click="confirmDelete({{ $issuedMerchandise->id }})"
+                                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
+                                                        Delete
+                                                    </button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -292,6 +285,7 @@
     <script>
         flatpickr("#issue_date", {
             dateFormat: "d-m-Y",
+            defaultDate: new Date(),
             // Configuration options for Flatpickr
             // You can customize the appearance and behavior here
         });

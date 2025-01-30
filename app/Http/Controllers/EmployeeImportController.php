@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MerchandiseIssuesExport;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeesImport;
@@ -10,13 +11,24 @@ use Illuminate\Support\Facades\Session;
 
 class EmployeeImportController extends Controller
 {
+
+    use AuthorizesRequests; // Ensure this is included
+
     public function showForm()
     {
-        return view('employees.import');
+        if (auth()->user()->can('bulk upload employee')) {
+            // User has permission, allow action
+            return view('employees.import');
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+
     }
 
     public function import(Request $request)
     {
+        $this->authorize('bulk upload employee');
+
         $request->validate([
             'file' => 'required|mimes:xlsx,csv|max:2048'
         ]);
