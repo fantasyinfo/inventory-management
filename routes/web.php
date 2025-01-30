@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/merchandise/import', [MerchandiseImportController::class, 'showForm'])->name('merchandise.import.form');
     Route::post('/merchandise/import', [MerchandiseImportController::class, 'import'])->name('merchandise.import');
 
+    Route::get('/merchandise/issue/import', [MerchandiseImportController::class, 'showIssueForm'])->name('merchandise.issue.import.form');
+    Route::post('/merchandise/issue/import', [MerchandiseImportController::class, 'importIssue'])->name('merchandise.issue.import');
 
     // issue
     Route::get('/issue-merchandise', IssueMerchandises::class)->name('issue.merchandise');
