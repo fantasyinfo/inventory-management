@@ -43,7 +43,7 @@
 
                                 <!-- Dropdown Options -->
                                 <div x-show="open" x-cloak
-                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-[300px] overflow-y-scroll">
+                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-[300px] overflow-y-scroll" style="display: none;">
                                     <ul class="max-h-[300px] overflow-y-scroll"
                                         style="height: 300px;overflow-y:scroll;border:1px solid">
                                         <template x-for="employee in filteredEmployees" :key="employee.id">
@@ -69,43 +69,35 @@
 
                             <div x-data="itemsDropdown()" class="relative">
                                 <x-input-label for="merchandise_id" :value="__('Select Item')" />
-                            
+
                                 <!-- Search Input -->
                                 <div class="relative">
-                                    <input 
-                                        id="merchandise_id" 
-                                        x-model="search"
-                                        @focus="open = true"
-                                        @click.away="open = false" 
-                                        @keydown.escape="open = false"
+                                    <input id="merchandise_id" x-model="search" @focus="open = true"
+                                        @click.away="open = false" @keydown.escape="open = false"
                                         placeholder="Search Item..."
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                    />
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
-                            
+
                                 <!-- Dropdown Options -->
-                                <div 
-                                    x-show="open" 
-                                    x-cloak
-                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg"
-                                >
+                                <div x-show="open" x-cloak
+                                    class="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg" style="display: none;">
                                     <ul class="max-h-[300px] overflow-y-auto">
                                         <template x-for="merchandise in filteredMerchandises" :key="merchandise.id">
-                                            <li 
-                                                @click="selectMerchandise(merchandise)"
-                                                class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white"
-                                            >
-                                  
-                                                <span x-text="merchandise.item_name + ' => QTY: ' + merchandise.qty"></span>
+                                            <li @click="selectMerchandise(merchandise)"
+                                                class="cursor-pointer px-4 py-2 text-gray-700 dark:text-white hover:bg-blue-500 hover:text-white">
+
+                                                <span
+                                                    x-text="merchandise.item_name + ' => QTY: ' + merchandise.qty"></span>
                                             </li>
                                         </template>
                                     </ul>
                                 </div>
-                            
+
                                 <x-input-error :messages="$errors->get('merchandise_id')" class="mt-2" />
-                            
+
                                 <!-- Hidden Input -->
-                                <input type="hidden" wire:model.live="merchandise_id" x-bind:value="selectedMerchandise?.id" />
+                                <input type="hidden" wire:model.live="merchandise_id"
+                                    x-bind:value="selectedMerchandise?.id" />
                             </div>
 
 
@@ -198,7 +190,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                                  
+
                                     @foreach ($issuedMerchandises as $issuedMerchandise)
                                         <tr>
 
@@ -208,24 +200,25 @@
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                                {{ date('F j, Y', strtotime($issuedMerchandise?->issue_date)) }} 
+                                                {{ date('F j, Y', strtotime($issuedMerchandise?->issue_date)) }}
                                             </td>
                                             <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                            {{ ucwords($issuedMerchandise->qty) }}
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
-                                          ({{$issuedMerchandise?->employee?->emp_id}})  {{ ucwords($issuedMerchandise?->employee?->full_name) }}
-                                        </td>
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                                                {{ ucwords($issuedMerchandise->qty) }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                                                ({{ $issuedMerchandise?->employee?->emp_id }})
+                                                {{ ucwords($issuedMerchandise?->employee?->full_name) }}
+                                            </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                                                 {{ ucwords($issuedMerchandise?->issuedBy?->name) }}
                                             </td>
 
-                                         
+
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                
+
                                                 <button wire:click="confirmDelete({{ $issuedMerchandise->id }})"
                                                     class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
                                                     Delete

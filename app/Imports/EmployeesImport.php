@@ -4,9 +4,15 @@ namespace App\Imports;
 use App\Models\Employee;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithUpserts;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class EmployeesImport implements ToModel, WithHeadingRow
+class EmployeesImport implements ToModel, WithHeadingRow, WithUpserts, WithBatchInserts, WithChunkReading
 {
+    /**
+     * Process each row.
+     */
     public function model(array $row)
     {
         return new Employee([
@@ -17,9 +23,31 @@ class EmployeesImport implements ToModel, WithHeadingRow
             'category' => $row['category'],
             'date_of_joining' => $row['date_of_joining'],
             'plant_location' => $row['plant_location'],
-            'created_at' => now(),
             'updated_at' => now(),
         ]);
     }
-}
 
+    /**
+     * Define the unique key for upsert.
+     */
+    public function uniqueBy()
+    {
+        return 'emp_id';
+    }
+
+    /**
+     * Optimize batch insert size.
+     */
+    public function batchSize(): int
+    {
+        return 10;
+    }
+
+    /**
+     * Read large files in chunks.
+     */
+    public function chunkSize(): int
+    {
+        return 10;
+    }
+}
