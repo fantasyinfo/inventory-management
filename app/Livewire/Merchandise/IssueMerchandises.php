@@ -27,7 +27,7 @@ class IssueMerchandises extends Component
 
     public function render()
     {
-        $employees = Employee::all();
+        $employees = Employee::where('status','active')->get();
         $merchandises = Merchandise::all();
         $managers = User::all();
 

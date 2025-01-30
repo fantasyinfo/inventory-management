@@ -5,16 +5,16 @@
                 {{ __('Employees') }}
             </h2>
             @can('bulk upload employee')
-            <a href="{{ route('employees.import.form') }}" wire:navigate
-                class="flex item-center gap-2 px-4 py-2 bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-white font-semibold rounded-lg shadow-md hover:bg-gray-400 dark:hover:bg-gray-700 transition duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                </svg>
-                Bulk Upload
-            </a>
-        @endcan
+                <a href="{{ route('employees.import.form') }}" wire:navigate
+                    class="flex item-center gap-2 px-4 py-2 bg-gray-300 text-gray-900 dark:bg-gray-900 dark:text-white font-semibold rounded-lg shadow-md hover:bg-gray-400 dark:hover:bg-gray-700 transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                    </svg>
+                    Bulk Upload
+                </a>
+            @endcan
         </div>
     </x-slot>
 
@@ -114,6 +114,8 @@
                                 </div>
 
 
+
+
                                 <div>
                                     <x-input-label for="date_of_joining" :value="__('Date of Joining')" />
                                     <x-text-input wire:model="date_of_joining" id="date_of_joining" type="text"
@@ -134,6 +136,32 @@
                                         @endforeach
                                     </select>
                                     <x-input-error :messages="$errors->get('plant_location')" class="mt-2" />
+                                </div>
+
+                                <div>
+                                    <x-input-label for="status" :value="__('Status')" />
+                                    <div class="flex space-x-4 mt-2">
+                                        <!-- Active Option -->
+                                        <div
+                                            class="flex items-center border border-gray-200 rounded-sm px-4 py-2 dark:border-gray-700">
+                                            <input id="bordered-radio-3" type="radio" value="active" name="status"
+                                                wire:model="status"
+                                                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="bordered-radio-3"
+                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Active</label>
+                                        </div>
+
+                                        <!-- Left Option -->
+                                        <div
+                                            class="flex items-center border border-gray-200 rounded-sm px-4 py-2 dark:border-gray-700">
+                                            <input id="bordered-radio-4" type="radio" value="left"
+                                                name="status" wire:model="status"
+                                                class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="bordered-radio-4"
+                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Left</label>
+                                        </div>
+                                    </div>
+                                    <x-input-error :messages="$errors->get('status')" class="mt-2" />
                                 </div>
 
                                 <div class="flex items-center gap-4">
@@ -189,6 +217,10 @@
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Department
                                         </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Status
+                                        </th>
 
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -216,6 +248,17 @@
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                                                 {{ ucwords($employee->department) }}
                                             </td>
+                                        
+
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                <button wire:click="toggleStatus({{ $employee->id }})"
+                                                    class="px-3 py-1 rounded-full text-xs font-semibold focus:outline-none
+                                                    {{ strtolower($employee->status) === 'active' 
+                                                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' 
+                                                        : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' }}">
+                                                    {{ ucwords($employee->status) }}
+                                                </button>
+                                            </td>
 
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
@@ -223,23 +266,23 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 @can('view employee')
-                                                <button wire:navigate
-                                                    href="{{ route('employees.details', ['id' => $employee->id]) }}"
-                                                    class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
-                                                    View
-                                                </button>
+                                                    <button wire:navigate
+                                                        href="{{ route('employees.details', ['id' => $employee->id]) }}"
+                                                        class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
+                                                        View
+                                                    </button>
                                                 @endcan
                                                 @can('update employee')
-                                                <button wire:click="startEdit({{ $employee->id }})"
-                                                    class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
-                                                    Edit
-                                                </button>
+                                                    <button wire:click="startEdit({{ $employee->id }})"
+                                                        class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
+                                                        Edit
+                                                    </button>
                                                 @endcan
                                                 @can('delete employee')
-                                                <button wire:click="confirmDelete({{ $employee->id }})"
-                                                    class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                    Delete
-                                                </button>
+                                                    <button wire:click="confirmDelete({{ $employee->id }})"
+                                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
+                                                        Delete
+                                                    </button>
                                                 @endcan
                                             </td>
                                         </tr>

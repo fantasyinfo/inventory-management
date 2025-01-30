@@ -18,11 +18,13 @@ return new class extends Migration {
             $table->string('company_contractor');
             $table->string('category');
             $table->string('plant_location');
-            
+
             $table->date('date_of_joining');
+            $table->enum('status', ['active', 'left'])->default('active');
             //
             $table->index('full_name');
             $table->index('emp_id');
+            $table->index('status');
             $table->timestamps();
         });
     }

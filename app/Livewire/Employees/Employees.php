@@ -13,7 +13,7 @@ class Employees extends Component
 
     use WithPagination;
 
-    public $emp_id = "", $department = "", $full_name = "", $company_contractor = "", $category = "", $date_of_joining = "", $plant_location = "";
+    public $emp_id = "", $department = "", $full_name = "", $company_contractor = "", $category = "", $date_of_joining = "", $plant_location = "", $status = "";
     public $editMode = false;
     public $employeeId = null;
     public $showDeleteModal = false;
@@ -48,7 +48,7 @@ class Employees extends Component
 
     /**
      * Summary of rules
-     * @return array{category: string, company_contractor: string, date_of_joining: string, department: string, emp_id: string, full_name: string, plant_location: string}
+
      */
     protected function rules()
     {
@@ -64,6 +64,7 @@ class Employees extends Component
             'category' => 'required|string',
             'date_of_joining' => 'required|date',
             'plant_location' => 'required|string',
+            'status' => 'string|required|in:active,left',
         ];
     }
 
@@ -85,7 +86,7 @@ class Employees extends Component
         $this->category = $employee->category;
         $this->date_of_joining = Carbon::parse($employee->date_of_joining)->format('d-m-Y');
         $this->plant_location = $employee->plant_location;
-
+        $this->status = $employee->status;
     }
 
     /**
@@ -156,6 +157,7 @@ class Employees extends Component
             $employee->category = $validatedData['category'];
             $employee->date_of_joining = Carbon::createFromFormat('d-m-Y', $validatedData['date_of_joining'])->format('Y-m-d H:i:s');
             $employee->plant_location = $validatedData['plant_location'];
+            $employee->status = $validatedData['status'];
 
             $employee->save();
             session()->flash('message', 'Employee updated successfully!');
@@ -168,11 +170,21 @@ class Employees extends Component
                 'category' => $validatedData['category'],
                 'date_of_joining' => Carbon::createFromFormat('d-m-Y', $validatedData['date_of_joining'])->format('Y-m-d H:i:s'),
                 'plant_location' => $validatedData['plant_location'],
+                'status' => $validatedData['status'],
             ]);
             session()->flash('message', 'Employee created successfully!');
         }
 
         $this->cancelEdit();
+    }
+
+    public function toggleStatus($employeeId)
+    {
+        $employee = Employee::findOrFail($employeeId);
+        $employee->status = strtolower($employee->status) === 'active' ? 'left' : 'active';
+        $employee->save();
+
+        session()->flash('message', 'Employee status changed successfully!');
     }
 
     /**

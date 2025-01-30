@@ -18,6 +18,7 @@ class Employee extends Model
         'category',
         'date_of_joining',
         'plant_location',
+        'status'
     ];
 
     public function issueMerchandise(){

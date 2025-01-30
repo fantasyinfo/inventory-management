@@ -48,7 +48,7 @@ class EmployeeImportController extends Controller
 
     public function showExportForm()
     {
-        $employees = Employee::all();
+        $employees = Employee::where('status','active')->get();
 
         return view('employees.export', [
             'employees' => $employees,
