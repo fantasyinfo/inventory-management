@@ -3,6 +3,7 @@
 $totalEmployees = \App\Models\Employee::getTotalCount();
 $totalJoiningKit = \App\Models\Merchandise::getTotalItemCount('Joining Kit');
 $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
+$lowStockItems = \App\Models\Merchandise::getAlertForLessThen20Stocks();
 
 ?>
 
@@ -190,6 +191,48 @@ $totalItemValue = \App\Models\Merchandise::getTotalItemValue();
             </div>
 
 
+
+            <div class="overflow-x-auto mt-4">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300  tracking-wider">
+                               ID
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300  tracking-wider">
+                                Item Name
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300  tracking-wider">
+                                Qty
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300  tracking-wider">
+                                Plant Location (Store)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <!-- Sample data row (will only show if $employees is empty) -->
+                        @foreach($lowStockItems as $item)
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ ucwords($item->item_name) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ $item->qty }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ ucwords($item->plant_location) }} ({{ $item->store_number }})</td>
+                             
+                               
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+           
+
+            
         </div>
     </div>
 

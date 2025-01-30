@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MerchandiseIssuesExport;
+use App\Models\Employee;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -47,7 +48,11 @@ class EmployeeImportController extends Controller
 
     public function showExportForm()
     {
-        return view('employees.export');
+        $employees = Employee::all();
+
+        return view('employees.export', [
+            'employees' => $employees,
+        ]);
     }
 
     public function export(Request $request)
@@ -55,15 +60,18 @@ class EmployeeImportController extends Controller
         $request->validate([
             'from_date' => 'required|date',
             'to_date' => 'required|date|after_or_equal:from_date',
-            'format' => 'required|in:csv,xlsx'
+            'format' => 'required|in:csv,xlsx',
+            'employee_id' => 'nullable|exists:employees,id'
         ]);
 
 
+  
         // Convert input dates from DD-MM-YYYY to YYYY-MM-DD
         $fromDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
         $toDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
 
+        $employeeId = $request->employee_id;
 
-        return Excel::download(new MerchandiseIssuesExport($fromDate, $toDate), "merchandise_issues.{$request->format}");
+        return Excel::download(new MerchandiseIssuesExport($fromDate, $toDate, $employeeId), "merchandise_issues.{$request->format}");
     }
 }

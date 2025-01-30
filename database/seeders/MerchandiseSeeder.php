@@ -99,10 +99,11 @@ class MerchandiseSeeder extends Seeder
         ];
 
         $merchandises = [];
-
-        for ($i = 0; $i < 100; $i++) {
+        $i = 1;
+        foreach ($itemNames as $item) {
             array_push($merchandises, [
-                'item_name' => $faker->randomElement($itemNames), // Pick a random item name from the list
+                'sku' => 'SKU-ITEM-' . ++$i,
+                'item_name' => $item, // Pick a random item name from the list
                 'supplier_name' => $faker->company(),
                 'brand_make' => $faker->company(),
                 'qty' => $faker->numberBetween(10, 200),

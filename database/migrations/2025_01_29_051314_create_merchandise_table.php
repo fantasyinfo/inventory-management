@@ -12,7 +12,9 @@ return new class extends Migration {
     {
         Schema::create('merchandise', function (Blueprint $table) {
             $table->id();
+            $table->string('sku')->unique();
             $table->string('item_name');
+            $table->string('item_image')->nullable();
             $table->date('date_of_purchase');
             $table->string('supplier_name');
             $table->string('brand_make');

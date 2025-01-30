@@ -17,6 +17,8 @@ class Merchandise extends Model
         'cost_per_item',
         'plant_location',
         'store_number',
+        'sku',
+        'item_image'
     ];
 
 
@@ -30,8 +32,15 @@ class Merchandise extends Model
         return self::where('item_name', $item)->sum('qty');
     }
 
-    public static function getTotalItemValue() {
+    public static function getTotalItemValue()
+    {
         return self::sum(\DB::raw('qty * cost_per_item'));
+    }
+
+    public static function getAlertForLessThen20Stocks()
+    {
+        return self::where('qty', '<', 20)
+            ->get(['id', 'item_name', 'qty', 'plant_location', 'store_number']);
     }
 
 }

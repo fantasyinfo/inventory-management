@@ -29,6 +29,18 @@
                             <form wire:submit.prevent="addNewMerchandise" class="space-y-6">
 
                                 <div>
+                                    <x-input-label for="sku" :value="__('Item SKU')" />
+                                    <x-text-input wire:model.live.debounce.250ms="sku" wire:model="sku" id="sku"
+                                        type="text"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus />
+                                    <x-input-error :messages="$errors->get('sku')" class="mt-2" />
+                                    @if ($editMode)
+                                        <p class='text-sm px-2 py-2 dark:text-indigo-300 text-indigo-700'> In Edit mode EMP
+                                            ID is disabled</p>
+                                    @endif
+                                </div>
+                                <div>
                                     <x-input-label for="item_name" :value="__('Item Name')" />
                                     <x-text-input wire:model="item_name" id="item_name" type="text"
                                         class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
@@ -100,6 +112,29 @@
                                     </select>
                                     <x-input-error :messages="$errors->get('store_number')" class="mt-2" />
                                 </div>
+
+
+
+                                <div>
+                                    <x-input-label for="item_image" :value="__('Item Image (100x100)')" />
+                                    <input type="file" wire:model="item_image" id="item_image"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        accept="image/*">
+                                    <x-input-error :messages="$errors->get('item_image')" class="mt-2" />
+
+                                    @if ($item_image && is_object($item_image))
+                                        <div class="mt-2">
+                                            <img src="{{ $item_image->temporaryUrl() }}"
+                                                class="w-24 h-24 rounded-lg border border-gray-300">
+                                        </div>
+                                    @elseif ($editMode && $item_image)
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/' . $item_image) }}"
+                                                class="w-24 h-24 rounded-lg border border-gray-300">
+                                        </div>
+                                    @endif
+                                </div>
+
 
                                 <div class="flex items-center gap-4">
 
@@ -200,23 +235,23 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 @can('view merchandise')
-                                                <button wire:navigate
-                                                    href="{{ route('merchandise.details', ['id' => $merchanide->id]) }}"
-                                                    class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
-                                                    View
-                                                </button>
+                                                    <button wire:navigate
+                                                        href="{{ route('merchandise.details', ['id' => $merchanide->id]) }}"
+                                                        class="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 mr-4">
+                                                        View
+                                                    </button>
                                                 @endcan
                                                 @can('update merchandise')
-                                                <button wire:click="startEdit({{ $merchanide->id }})"
-                                                    class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
-                                                    Edit
-                                                </button>
+                                                    <button wire:click="startEdit({{ $merchanide->id }})"
+                                                        class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">
+                                                        Edit
+                                                    </button>
                                                 @endcan
-                                                @can('delete merchandise')
-                                                <button wire:click="confirmDelete({{ $merchanide->id }})"
-                                                    class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
-                                                    Delete
-                                                </button>
+                                                @can('view employee')
+                                                    <button wire:click="confirmDelete({{ $merchanide->id }})"
+                                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
+                                                        Delete
+                                                    </button>
                                                 @endcan
                                             </td>
                                         </tr>
