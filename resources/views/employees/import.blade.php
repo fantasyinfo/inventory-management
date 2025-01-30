@@ -13,24 +13,38 @@
         @endif
 
         @can('bulk upload employee')
-        <form action="{{ route('employees.import') }}" method="POST" enctype="multipart/form-data"
-            onsubmit="startUpload()">
-            @csrf
-            <input type="file" name="file"
-                class="border p-2 w-full rounded-md bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+            <form action="{{ route('employees.import') }}" method="POST" enctype="multipart/form-data"
+                onsubmit="startUpload()">
+                @csrf
+                <input type="file" name="file"
+                    class="border p-2 w-full rounded-md bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
 
-            <div id="progress-container" class="hidden mt-3 bg-gray-300 dark:bg-gray-600 rounded-md h-2 w-full">
-                <div id="progress-bar" class="bg-blue-500 h-2 rounded-md" style="width: 0%;"></div>
-            </div>
+                <div id="progress-container" class="hidden mt-3 bg-gray-300 dark:bg-gray-600 rounded-md h-2 w-full">
+                    <div id="progress-bar" class="bg-blue-500 h-2 rounded-md" style="width: 0%;"></div>
+                </div>
 
-            <button type="submit" class="mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-full">
-                Upload File
-            </button>
-        </form>
+                <button type="submit" class="mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md w-full">
+                    Upload File
+                </button>
+            </form>
         @endcan
 
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Sample CSV Format</h3>
-        <a target="_blank" class="bg-green-600 px-3 py-2" href="{{url('/csv/employee.csv')}}" download >Download Sample CSV File</a>
+
+
+
+        <div class="flex justify-between items-center mt-5">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Sample CSV Format</h3>
+            <a target="_blank" href="{{ url('/csv/employee.csv') }}" download
+                class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4v12m0 0l-3-3m3 3l3-3M4 16h16" />
+                </svg>
+                Download Sample CSV File
+            </a>
+
+        </div>
         <div class="container mx-auto px-4 py-8">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md">
                 <!-- Header Section -->

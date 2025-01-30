@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeImportController;
+use App\Http\Controllers\MerchandiseImportController;
 use App\Livewire\Employees\EmployeeDetail;
 use App\Livewire\Employees\Employees;
 use App\Livewire\Manager\ManagerDetail;
@@ -34,6 +35,12 @@ Route::group(['middleware' => ['auth']], function () {
     // merchandise
     Route::get('/merchandise', Merchandise::class)->name('merchandise');
     Route::get('/merchandise/details/{id}', MerchandiseDetail::class)->name('merchandise.details');
+
+    // import & export 
+    Route::get('/merchandise/import', [MerchandiseImportController::class, 'showForm'])->name('merchandise.import.form');
+    Route::post('/merchandise/import', [MerchandiseImportController::class, 'import'])->name('merchandise.import');
+
+
     // issue
     Route::get('/issue-merchandise', IssueMerchandises::class)->name('issue.merchandise');
     Route::get('/available-stocks', AvailableStocks::class)->name('available.stocks');

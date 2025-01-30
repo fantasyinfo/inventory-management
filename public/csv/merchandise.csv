@@ -1,0 +1,4 @@
+sku,item_name,supplier_name,brand_make,qty,cost_per_item,date_of_purchase,plant_location,store_number
+SKU-ITEM-1,Laptop Pro,Tech Supplies Ltd.,BrandX,50,1200,2025-01-01,New York,1
+SKU-ITEM-2,Wireless Keyboard,Office Essentials Inc.,TypeFast,100,80,2025-01-05,Los Angeles,2
+SKU-ITEM-3,Gaming Mouse,Elite Gadgets Co.,SpeedX,30,150,2025-01-10,Chicago,3
