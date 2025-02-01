@@ -10,6 +10,8 @@ use App\Livewire\Merchandise\AvailableStocks;
 use App\Livewire\Merchandise\IssueMerchandises;
 use App\Livewire\Merchandise\Merchandise;
 use App\Livewire\Merchandise\MerchandiseDetail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 // Route::view('/', 'welcome');
@@ -60,5 +62,37 @@ Route::group(['middleware' => ['auth']], function () {
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
+
+
+
+
+Route::get('/setup', function (Request $request) {
+    if ($request->header('X-Setup-Key') !== "fantasyinfofreelancer") {
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
+
+    // Capture Artisan command output
+    $output = [];
+
+    // **Forcefully reset the database and apply fresh migrations**
+    $output['migrate_fresh'] = Artisan::call('migrate:fresh --force');
+
+    // **Re-seed the database (force re-insert of data)**
+    $output['db_seed'] = Artisan::call('db:seed --force');
+
+    // **Re-optimize Laravel**
+    $output['config_cache'] = Artisan::call('config:cache');
+    $output['route_cache'] = Artisan::call('route:cache');
+    $output['view_cache'] = Artisan::call('view:cache');
+    $output['optimize'] = Artisan::call('optimize');
+
+    // Log the output
+    info('Setup Command Output:', $output);
+
+    return response()->json([
+        'message' => 'Setup completed successfully (Forced Data Refresh)',
+        'output' => $output
+    ]);
+});
 
 require __DIR__ . '/auth.php';
