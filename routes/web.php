@@ -95,4 +95,6 @@ Route::get('/setup', function (Request $request) {
     ]);
 });
 
+# curl -H "X-Setup-Key: fantasyinfofreelancer" https://inventory.fantasyinfo.cloud/setup
+
 require __DIR__ . '/auth.php';
