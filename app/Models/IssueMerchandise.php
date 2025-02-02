@@ -14,6 +14,7 @@ class IssueMerchandise extends Model
         'issued_by',
         'qty',
         'issue_date',
+        'remarks',
     ];
 
     public function employee()

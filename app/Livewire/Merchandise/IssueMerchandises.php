@@ -25,6 +25,8 @@ class IssueMerchandises extends Component
 
     public $searchTerm = '';
 
+    public $remarks = "";
+
     public function render()
     {
         $employees = Employee::where('status','active')->get();
@@ -64,6 +66,7 @@ class IssueMerchandises extends Component
             'merchandise_id' => 'required|exists:merchandise,id',
             'qty' => 'required|numeric',
             'issue_date' => 'required|date',
+            'remarks' => 'nullable|string'
         ];
     }
     public function addNewMerchandise()
@@ -81,6 +84,7 @@ class IssueMerchandises extends Component
             'merchandise_id' => $validatedData['merchandise_id'],
             'issued_by' => Auth::id(),
             'qty' => $validatedData['qty'],
+            'remarks' => $validatedData['remarks'],
             'issue_date' => Carbon::createFromFormat('d-m-Y', $validatedData['issue_date'])->format('Y-m-d H:i:s'),
         ]);
 
@@ -91,7 +95,7 @@ class IssueMerchandises extends Component
         $merchandise->save();
 
         session()->flash('message', 'Merchandise Issued successfully!');
-        $this->reset(['employee_id', 'merchandise_id', 'issued_by', 'qty', 'issue_date']);
+        $this->reset(['employee_id', 'merchandise_id', 'issued_by', 'qty', 'issue_date','remarks']);
     }
 
 

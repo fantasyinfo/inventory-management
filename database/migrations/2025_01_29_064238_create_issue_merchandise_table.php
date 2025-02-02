@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->foreignIdFor(User::class, 'issued_by'); // issued_by
             $table->integer('qty');
             $table->date('issue_date');
+            $table->text('remarks')->nullable();
             $table->timestamps();
         });
     }

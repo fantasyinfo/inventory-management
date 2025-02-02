@@ -71,7 +71,7 @@
             <label class="text-gray-800 dark:text-gray-200 mt-2">To Date</label>
             <input type="date" name="to_date" id="to_date"
                 class="border p-2 w-full rounded-md bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 mb-3"
-                required>
+                >
             <x-input-error :messages="$errors->get('to_date')" class="mt-2" />
             </div>
 

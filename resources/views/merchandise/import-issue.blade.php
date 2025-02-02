@@ -28,7 +28,7 @@
 
         <div class="flex justify-between items-center mt-5">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6">Sample CSV Format</h3>
-            <a target="_blank" href="{{ url('/csv/merchandise.csv') }}" download
+            <a target="_blank" href="{{ url('/csv/issue_merchandise.csv') }}" download
                 class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">

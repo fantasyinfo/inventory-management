@@ -48,7 +48,7 @@ class EmployeeImportController extends Controller
 
     public function showExportForm()
     {
-        $employees = Employee::where('status','active')->get();
+        $employees = Employee::where('status', 'active')->get();
 
         return view('employees.export', [
             'employees' => $employees,
@@ -59,16 +59,21 @@ class EmployeeImportController extends Controller
     {
         $request->validate([
             'from_date' => 'required|date',
-            'to_date' => 'required|date|after_or_equal:from_date',
+            'to_date' => 'nullable|date|after_or_equal:from_date',
             'format' => 'required|in:csv,xlsx',
             'employee_id' => 'nullable|exists:employees,id'
         ]);
 
 
-  
+
         // Convert input dates from DD-MM-YYYY to YYYY-MM-DD
         $fromDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
-        $toDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+        if (isset($request->to_date)) {
+            $toDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+        } else {
+            $toDate = \Carbon\Carbon::createFromFormat('d-m-Y', date('d-m-Y'))->format('Y-m-d');
+        }
+
 
         $employeeId = $request->employee_id;
 

@@ -85,6 +85,7 @@ Route::get('/setup', function (Request $request) {
     $output['route_cache'] = Artisan::call('route:cache');
     $output['view_cache'] = Artisan::call('view:cache');
     $output['optimize'] = Artisan::call('optimize');
+    $output['storage_link'] = Artisan::call('storage:link');
 
     // Log the output
     info('Setup Command Output:', $output);

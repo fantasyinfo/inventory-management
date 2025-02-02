@@ -1,4 +1,14 @@
 <div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#date_of_purchase", {
+            dateFormat: "d-m-Y",
+            // Configuration options for Flatpickr
+            // You can customize the appearance and behavior here
+        });
+    </script>
+
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -259,7 +269,7 @@
                                                         Edit
                                                     </button>
                                                 @endcan
-                                                @can('view employee')
+                                                @can('delete merchandise')
                                                     <button wire:click="confirmDelete({{ $merchanide->id }})"
                                                         class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300">
                                                         Delete
@@ -330,12 +340,4 @@
         @endif
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        flatpickr("#date_of_purchase", {
-            dateFormat: "d-m-Y",
-            // Configuration options for Flatpickr
-            // You can customize the appearance and behavior here
-        });
-    </script>
 </div>

@@ -130,6 +130,13 @@
                                         autofocus />
                                     <x-input-error :messages="$errors->get('issue_date')" class="mt-2" />
                                 </div>
+                                <div>
+                                    <x-input-label for="remarks" :value="__('Remarks')" />
+                                    <textarea wire:model="remarks"  id="remarks" rows="5"
+                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                        autofocus > </textarea>
+                                    <x-input-error :messages="$errors->get('remarks')" class="mt-2" />
+                                </div>
 
 
                                 <div class="flex items-center gap-4">
@@ -189,6 +196,10 @@
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Remark 
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
@@ -218,6 +229,10 @@
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
                                                 {{ ucwords($issuedMerchandise?->issuedBy?->name) }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">
+                                                {{ ucwords($issuedMerchandise?->remarks) }}
                                             </td>
 
 
