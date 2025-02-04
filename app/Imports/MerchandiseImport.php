@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Carbon\Carbon;
 
 class MerchandiseImport implements ToModel, WithHeadingRow, WithUpserts, WithBatchInserts, WithChunkReading
 {
@@ -23,7 +24,7 @@ class MerchandiseImport implements ToModel, WithHeadingRow, WithUpserts, WithBat
             'brand_make' => $row['brand_make'],
             'qty' => $row['qty'],
             'cost_per_item' => $row['cost_per_item'],
-            'date_of_purchase' => $row['date_of_purchase'],
+            'date_of_purchase' => Carbon::createFromFormat('d-m-Y', $row['date_of_purchase'])->format('Y-m-d H:i:s'),
             'plant_location' => $row['plant_location'],
             'store_number' => $row['store_number'],
             'created_at' => now(),

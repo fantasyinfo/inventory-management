@@ -41,6 +41,7 @@ class EmployeeImportController extends Controller
             Session::flash('success', 'Employees imported successfully!');
         } catch (\Exception $e) {
             Session::flash('error', 'Error importing file. Please check the format.');
+            dd($e->getMessage());
         }
 
         return back();

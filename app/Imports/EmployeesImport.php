@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Carbon\Carbon;
 
 class EmployeesImport implements ToModel, WithHeadingRow, WithUpserts, WithBatchInserts, WithChunkReading
 {
@@ -21,7 +22,7 @@ class EmployeesImport implements ToModel, WithHeadingRow, WithUpserts, WithBatch
             'full_name' => $row['full_name'],
             'company_contractor' => $row['company_contractor'],
             'category' => $row['category'],
-            'date_of_joining' => $row['date_of_joining'],
+            'date_of_joining' => Carbon::createFromFormat('d-m-Y', $row['date_of_joining'])->format('Y-m-d H:i:s'),
             'plant_location' => $row['plant_location'],
             'updated_at' => now(),
         ]);
